@@ -17,7 +17,8 @@ class TodoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'todo' => fake()->sentence(),
+            'is_completed' => rand(0, 1)
         ];
     }
 }
