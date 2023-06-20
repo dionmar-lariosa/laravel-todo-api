@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Api;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,7 @@ class TodoFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => User::all()->random()->id,
             'todo' => fake()->sentence(),
             'is_completed' => rand(0, 1)
         ];
