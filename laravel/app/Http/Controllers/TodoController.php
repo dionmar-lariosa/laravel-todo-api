@@ -22,7 +22,9 @@ class TodoController extends Controller
      */
     public function store(StoreTodoRequest $request)
     {
-        //
+        $todo = Todo::create($request->validated());
+
+        return TodoResource::make($todo);
     }
 
     /**
