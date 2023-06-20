@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompleteTodoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TodoController;
@@ -20,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('todos', TodoController::class);
+Route::patch('todos/{todo}/complete', CompleteTodoController::class);
