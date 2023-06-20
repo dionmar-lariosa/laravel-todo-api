@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use App\Http\Resources\TodoResource;
 use App\Models\Api\Todo;
 
 class TodoController extends Controller
@@ -13,7 +14,7 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return Todo::all();
+        return TodoResource::collection(Todo::ALL());
     }
 
     /**
