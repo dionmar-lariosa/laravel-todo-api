@@ -16,11 +16,11 @@ class AuthController extends Controller
 
     public function register()
     {
-        return 'this is login';
+        return 'this is register';
     }
 
     public function logout()
     {
-        return 'this is login';
+        return 'this is logout';
     }
 }
