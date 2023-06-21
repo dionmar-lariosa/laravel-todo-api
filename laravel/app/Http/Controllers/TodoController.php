@@ -55,6 +55,9 @@ class TodoController extends Controller
      */
     public function update(UpdateTodoRequest $request, Todo $todo)
     {
+        if (Auth::user()->id !== $todo->user_id) {
+            return $this->error('', 'You are not authorized to make this request', 403);
+        }
         $todo->update($request->validated());
 
         return TodoResource::make($todo);
