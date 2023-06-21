@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Api\Todo;
+use App\Http\Resources\TodoResource;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
-use App\Http\Resources\TodoResource;
-use App\Models\Api\Todo;
 
 class TodoController extends Controller
 {
@@ -14,7 +15,9 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return TodoResource::collection(Todo::ALL());
+        return TodoResource::collection(
+            Todo::where('user_id', Auth::user()->id)->get()
+        );
     }
 
     /**
