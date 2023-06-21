@@ -7,9 +7,12 @@ use App\Http\Resources\TodoResource;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreTodoRequest;
 use App\Http\Requests\UpdateTodoRequest;
+use App\Traits\HttpResponses;
 
 class TodoController extends Controller
 {
+    use HttpResponses;
+
     /**
      * Display a listing of the resource.
      */
@@ -35,6 +38,10 @@ class TodoController extends Controller
      */
     public function show(Todo $todo)
     {
+        if (Auth::user()->id !== $todo->user_id) {
+            return $this->error('', 'You are not authorized to make this request', 403);
+        }
+
         return TodoResource::make($todo);
     }
 
