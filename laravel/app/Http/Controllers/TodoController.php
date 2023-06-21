@@ -70,6 +70,6 @@ class TodoController extends Controller
     {
         $todo->delete();
 
-        return response()->json(['status' => 'success', 'message' => 'Todo deleted successfully']);
+        return response(null, 204);
     }
 }
