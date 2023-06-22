@@ -13,6 +13,7 @@ class CompleteTodoController extends Controller
      */
     public function __invoke(Request $request, Todo $todo)
     {
+        $this->authorize('isValidUser', $todo);
         $todo->is_completed = $request->is_completed;
         $todo->save();
 

@@ -18,9 +18,11 @@ class TodoController extends Controller
      */
     public function index()
     {
-        return TodoResource::collection(
-            Todo::where('user_id', Auth::user()->id)->get()
-        );
+        if (Auth::check()) {
+            return TodoResource::collection(
+                Todo::where('user_id', Auth::user()->id)->get()
+            );
+        }
     }
 
     /**
@@ -28,14 +30,15 @@ class TodoController extends Controller
      */
     public function store(StoreTodoRequest $request)
     {
-        $request->validated();
+        if (Auth::check()) {
+            $request->validated();
+            $todo = Todo::create([
+                'user_id' => Auth::user()->id,
+                'todo' => $request->todo
+            ]);
 
-        $todo = Todo::create([
-            'user_id' => Auth::user()->id,
-            'todo' => $request->todo
-        ]);
-
-        return TodoResource::make($todo);
+            return TodoResource::make($todo);
+        }
     }
 
     /**
@@ -43,9 +46,7 @@ class TodoController extends Controller
      */
     public function show(Todo $todo)
     {
-        if (Auth::user()->id !== $todo->user_id) {
-            return $this->error('', 'You are not authorized to make this request', 403);
-        }
+        $this->authorize('isValidUser', $todo);
 
         return TodoResource::make($todo);
     }
@@ -55,9 +56,7 @@ class TodoController extends Controller
      */
     public function update(UpdateTodoRequest $request, Todo $todo)
     {
-        if (Auth::user()->id !== $todo->user_id) {
-            return $this->error('', 'You are not authorized to make this request', 403);
-        }
+        $this->authorize('isValidUser', $todo);
         $todo->update($request->validated());
 
         return TodoResource::make($todo);
@@ -68,6 +67,7 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
+        $this->authorize('isValidUser', $todo);
         $todo->delete();
 
         return response(null, 204);
