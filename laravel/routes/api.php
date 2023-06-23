@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,7 @@ Route::post('register', [AuthController::class, 'register']);
 // Protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::apiResource('todos', TodoController::class);
+    Route::apiResource('user', UserController::class);
     Route::patch('todos/{todo}/complete', CompleteTodoController::class);
     Route::post('logout', [AuthController::class, 'logout']);
 });
