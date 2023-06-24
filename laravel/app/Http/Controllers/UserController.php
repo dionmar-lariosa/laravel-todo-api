@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -13,16 +14,19 @@ class UserController extends Controller
     public function show(User $user)
     {
         $this->authorize('update', $user);
-        return 'show user';
+
+        return UserResource::make($user);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
         $this->authorize('update', $user);
-        return 'update user';
+        $user->update($request->validated());
+
+        return UserResource::make($user);
     }
 
     /**
@@ -31,6 +35,8 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $this->authorize('delete', $user);
-        return 'delete a user';
+        $user->delete();
+
+        return response(null, 204);
     }
 }
