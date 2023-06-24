@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTodoRequest extends FormRequest
@@ -21,8 +23,17 @@ class StoreTodoRequest extends FormRequest
      */
     public function rules(): array
     {
+        $userId = Auth::id();
+
         return [
-            'todo' => 'required|string|max:200|unique:todos'
+            'todo' => [
+                'required',
+                'string',
+                'max:200',
+                Rule::unique('todos')->where(function ($query) use ($userId) {
+                    $query->where('user_id', $userId);
+                }),
+            ],
         ];
     }
 }
